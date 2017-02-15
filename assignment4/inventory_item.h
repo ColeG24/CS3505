@@ -1,17 +1,23 @@
-#include 
+#include <boost/date_time/gregorian/gregorian.hpp>
+#include "food_item.h" 
+
+#ifndef INVENTORY_ITEM_H
+#define INVENTORY_ITEM_H
 
 class inventory_item 
 {
   private:
     int count;
     food_item foodItem;
-    date expirationDate;
+    boost::gregorian::date expirationDate;
 
   public:
-    inventory_item(const food_item, int count, date currDate);
+    inventory_item(const food_item, int count, boost::gregorian::date currDate);
     
     int get_count();
 
-    date get_expiration_date();
+    boost::gregorian::date get_expiration_date();
  
 };
+
+#endif

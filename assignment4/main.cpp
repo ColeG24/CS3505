@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char* argv[]) 
 {
-  if (argc != 1) 
+  if (argc != 2) 
   {
     cout << "Wrong number of arguments" << endl;
     return 0;
@@ -15,5 +15,5 @@ int main(int argc, char* argv[])
   string filename = argv[1];
   transaction_parser parser(filename);
   
-
+  return 0;
 }

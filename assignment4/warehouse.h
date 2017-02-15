@@ -1,19 +1,26 @@
-#include <string.h>
+#include <string>
+#include <vector>
 #include <unordered_map>
+#include "inventory_item.h"
+
+#ifndef WAREHOUSE_H
+#define WAREHOUSE_H
 
 class warehouse 
 {
   private:
-    string name;
-    std::unordered_map<std::string, inventory_item>;
+    std::string name;
+    std::unordered_map<std::string, inventory_item> inventoryMap;
 
   public:
     warehouse(std::string name);
     
-    get_upc_codes();
+    std::vector<std::string> get_upc_codes();
 
-    request(food_item foodItem, int count);
+    void request(food_item foodItem, int count);
 
-    receive(food_item foodItem, int count, date curr_date);
+    void receive(food_item foodItem, int count, boost::gregorian::date curr_date);
 
 };
+
+#endif

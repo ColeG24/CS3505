@@ -1,4 +1,7 @@
-#include <string.h>
+#include <string>
+
+#ifndef FOOD_ITEM_H
+#define FOOD_ITEM_H
 
 class food_item 
 {
@@ -16,3 +19,5 @@ class food_item
 
     int get_shelf_life();
 };
+
+#endif
