@@ -23,12 +23,12 @@ transaction_parsr::transaction_parser(string filename) :
   }
 }
 
-unordered_map<int, vector<request>> transaction_parser::get_requests_map()
+vector<vector<request>> transaction_parser::get_requests()
 {
   return requests;
 }
 
-unordered_map<int, vector<receive>> transaction_parser::get_receives_map()
+vector<vector<receive>> transaction_parser::get_receives()
 {
   return receives;
 }
@@ -110,6 +110,7 @@ void transaction_parser::process_food_item(istringstream & iss)
 
   food_item food(name, upc, shelfLife);
 
+  foodItems.emplace(upc, food);
 }
 
 void transaction_parser::process_warehouse(istringstream & iss)
@@ -120,15 +121,20 @@ void transaction_parser::process_warehouse(istringstream & iss)
 
   cout << warehouseName << endl;
 
-  // Create warehouse and add to warehouses.
-  //  warehouse warehouse (warehouseName);
+  warehouse warehouse (warehouseName);
 
-  // Add warehouse to warehouse map..
+  warehouses.emplace(warehouseName, warehouse);
 }
 
 void transaction_parser::process_start_date() 
 {
   startDate = 0;
+  
+  vector<request> requestStart;
+  requests.push_back(requestStart);
+
+  vector<receive> receiveStart;
+  receives.push_back(receiveStart);
 }
 
 void transaction_parser::process_receive(istringstream & iss) 
@@ -142,12 +148,15 @@ void transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
+  receive receive (upc, warehouse, count);
+
+  receives[numDays].push_back(receive);
+
   cout << upc << " " << count << " " << warehouse << endl;
 }
 
 void transaction_parser::process_request(istringstream & iss)
 {
-  
   string upc;
   iss >> upc;
 
@@ -157,12 +166,21 @@ void transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
+  request request (upc, warehouse, count);
+
+  requests[numDays].push_back(request);
+
   cout << upc << " " << count << " " << warehouse << endl;
 }
 
 void transaction_parser::process_next()
 {
   add_day();
+  vector<request> requestsForDay;
+  requests.push_back(requestsForDay);
+
+  vector<receive> receiveForDay;
+  receives.push_back(receiveForDay);
 }
 
 void transaction_parser::process_end()

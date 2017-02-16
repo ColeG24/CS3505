@@ -6,16 +6,18 @@
 class inventory_item 
 {
   private:
-    int count;
+    int quantity;
     food_item foodItem;
     int expirationDate;
 
   public:
-    inventory_item(const food_item & foodItem, int count, int currDate);
+    inventory_item(const food_item & foodItem, int quantity, int currDate);
     
-    int get_count();
+    int get_quantity();
 
     int get_expiration_date();
+
+    int decrement_quantity(int amount);
  
 };
 
