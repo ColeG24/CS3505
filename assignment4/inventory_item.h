@@ -12,7 +12,7 @@ class inventory_item
     boost::gregorian::date expirationDate;
 
   public:
-    inventory_item(const food_item, int count, boost::gregorian::date currDate);
+    inventory_item(const food_item & foodItem, int count, const boost::gregorian::date & currDate);
     
     int get_count();
 
