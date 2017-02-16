@@ -3,18 +3,18 @@
 
 using namespace std;
 
-inventory_item::inventory_item(const food_item & foodItem, int count, int currDate) :
-  count(count), foodItem(foodItem)
+inventory_item::inventory_item(const food_item & foodItem, int quantity, int currDate) :
+  quantity(quantity), foodItem(foodItem)
 {
   // Calculate expiration date from food item and current date
 }
 
-int inventory_item::get_count() 
+int inventory_item::get_quantity() 
 {
-  return count;
+  return quantity;
 }
 
-int get_expiration_date() 
+int inventory_item:: get_expiration_date() 
 {
   return expirationDate;
 }
