@@ -18,14 +18,36 @@ vector<string> warehouse::get_upc_codes()
 
 void warehouse::request(food_item foodItem, int count) 
 {
-
+  int amountLeft = count;
+  if (inventoryMap.find(foodItem.get_upc() != inventoryMap.end()))
+  {
+    // Add item to queue
+    queue<inventory_item> candidates = inventoryMap[foodItem.get_upc()];
+    while (amountLeft > 0)
+    {
+      inventory_item currItem = candidates.front();
+      if (currItem.get_quantity() > amountLeft) 
+      {
+        currItem.decrement_quantity(amountLeft);
+        amountLeft = 0;
+      }
+      else
+      {
+        amountLeft -= currItem.get_quantity();
+        inventory_items.pop();
+        // TODO remove from expiration date map
+      }
+    }
+    
+  }
+  // Warehouse does not contain item so ignore request
 }
 
 /*
  * Expects to recieve food in order
  */
 void warehouse::receive(food_item foodItem, int count, int currDate)
-
+  // TODO when adding to queue check if there is already a inventory item with same expiration date in back, if there is, just add to it instead of making two entries.
   inventory_item item (foodItem, count, currDate);
 
   // Add to inventory map
