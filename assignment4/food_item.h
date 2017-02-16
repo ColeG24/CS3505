@@ -13,11 +13,11 @@ class food_item
   public:
     food_item(std::string name, std::string upc, int shelfLife);
 
-    std::string get_upc();
+    std::string get_upc() const;
+    
+    std::string get_name() const;
 
-    std::string get_name();
-
-    int get_shelf_life();
+    int get_shelf_life() const;
 };
 
-#endif
+
