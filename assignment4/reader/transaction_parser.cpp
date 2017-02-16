@@ -12,7 +12,7 @@
 
 using namespace std;
 
-transaction_parser::transaction_parser(string filename) :
+transaction_parsr::transaction_parser(string filename) :
   reachedEnd(false)
 {
   // TODO make sure we handle bad files ok
@@ -114,7 +114,7 @@ void transaction_parser::process_food_item(istringstream & iss)
 
   cout << upc << " " << shelfLife << " " << name << endl;
 
-  //food_item food (name, upc, shelfLife);
+  food_item food(name, upc, shelfLife);
 
 }
 
