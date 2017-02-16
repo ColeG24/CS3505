@@ -20,4 +20,4 @@ class food_item
     int get_shelf_life() const;
 };
 
-
+#endif
