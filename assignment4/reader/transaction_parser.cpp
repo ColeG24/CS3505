@@ -8,10 +8,11 @@
 #include "receive.h"
 #include <fstream>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
-transaction_parsr::transaction_parser(string filename) :
+transaction_parser::transaction_parser(string filename) :
   reachedEnd(false)
 {
   // TODO make sure we handle bad files ok

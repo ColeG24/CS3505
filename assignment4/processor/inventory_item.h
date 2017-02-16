@@ -1,4 +1,5 @@
 #include "food_item.h" 
+#include <string>
 
 #ifndef INVENTORY_ITEM_H
 #define INVENTORY_ITEM_H
@@ -17,8 +18,11 @@ class inventory_item
 
     int get_expiration_date();
 
-    int decrement_quantity(int amount);
- 
+    void decrement_quantity(int amount);
+
+    void increment_quantity(int amount);
+
+    std::string get_upc();
 };
 
 #endif
