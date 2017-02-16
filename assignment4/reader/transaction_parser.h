@@ -2,8 +2,9 @@
 #include <unordered_map>
 #include <vector>
 
-#include "food_item.h"
-#include "warehouse.h"
+#include "../processor/food_item.h"
+#include "../processor/warehouse.h"
+
 #include "request.h"
 #include "receive.h"
 

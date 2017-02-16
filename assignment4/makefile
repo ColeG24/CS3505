@@ -1,3 +1,3 @@
-a.out: main.cpp transaction_parser.cpp
+a.out: main.cpp reader/transaction_parser.cpp
 	g++ -std=c++0x $^
 

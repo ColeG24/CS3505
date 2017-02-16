@@ -1,9 +1,9 @@
 #include "transaction_parser.h"
-#include <string.h>
+#include <string>
 #include <unordered_map>
 
-#include "food_item.h"
-#include "warehouse.h"
+#include "../processor/food_item.h"
+#include "../processor/warehouse.h"
 #include "request.h"
 #include "receive.h"
 #include <boost/date_time/gregorian/gregorian.hpp>
