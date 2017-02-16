@@ -11,6 +11,7 @@
 #include <sstream>
 
 using namespace std;
+using namespace boost::gregorian;
 
 transaction_parser::transaction_parser(string filename) :
   reachedEnd(false)
@@ -24,29 +25,29 @@ transaction_parser::transaction_parser(string filename) :
   }
 }
 
-vector<request> transaction_parser::get_requests(boost::gregorian::date startDate)
+unordered_map<string, vector<request>> transaction_parser::get_requests_map()
 {
-
+  return requests;
 }
 
-vector<receive> transaction_parser::get_receives(boost::gregorian::date startDate)
+unordered_map<string, vector<receive>> transaction_parser::get_receives_map()
 {
-
+  return receives;
 }
 
-vector<food_item> transaction_parser::get_food_items()
+unordered_map<string, food_item> transaction_parser::get_food_items_map()
 {
-
+  return foodItems;
 }
 
-void transaction_parser::get_warehouse(string name)
+unordered_map<string, warehouse> transaction_parser::get_warehouse_map()
 {
-  //return warehouses[name];
+  return warehouses;
 }
 
-boost::gregorian::date transaction_parser::get_start_date()
+date transaction_parser::get_start_date()
 {
-
+  return startDate;
 }
 
 int transaction_parser::get_number_of_days()
@@ -114,8 +115,7 @@ void transaction_parser::process_food_item(istringstream & iss)
 
   cout << upc << " " << shelfLife << " " << name << endl;
 
-  //food_item food (name, upc, shelfLife);
-
+  food_item food(name, upc, shelfLife);
 }
 
 void transaction_parser::process_warehouse(istringstream & iss)
@@ -135,10 +135,14 @@ void transaction_parser::process_warehouse(istringstream & iss)
 void transaction_parser::process_start_date(istringstream & iss) 
 {
   iss.ignore(256, ':');
-  string date;
-  iss >> date;
+  string sdate;
+  iss >> sdate;
 
-  cout << date << endl;
+  date d(from_us_string(sdate));
+
+  //  startDate = d;
+
+  cout << sdate << endl;
 }
 
 void transaction_parser::process_receive(istringstream & iss) 
