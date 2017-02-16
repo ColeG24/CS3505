@@ -3,7 +3,7 @@ FoodItem - UPC Code: 0984523912  Shelf life: 1  Name: the orange box
 Warehouse - Columbus
 Warehouse - Scottsdale
 Warehouse - Tacoma
-Start date: 05/01/2010
+Start date: 5/1/2010
 Receive: 0984523912 7 Tacoma
 Receive: 0353264991 6 Tacoma
 Receive: 0353264991 2 Scottsdale

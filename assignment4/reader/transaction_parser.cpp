@@ -6,7 +6,6 @@
 #include "../processor/warehouse.h"
 #include "request.h"
 #include "receive.h"
-#include <boost/date_time/gregorian/gregorian.hpp>
 #include <fstream>
 #include <sstream>
 
@@ -24,29 +23,24 @@ transaction_parsr::transaction_parser(string filename) :
   }
 }
 
-vector<request> transaction_parser::get_requests(boost::gregorian::date startDate)
+unordered_map<int, vector<request>> transaction_parser::get_requests_map()
 {
-
+  return requests;
 }
 
-vector<receive> transaction_parser::get_receives(boost::gregorian::date startDate)
+unordered_map<int, vector<receive>> transaction_parser::get_receives_map()
 {
-
+  return receives;
 }
 
-vector<food_item> transaction_parser::get_food_items()
+unordered_map<string, food_item> transaction_parser::get_food_items_map()
 {
-
+  return foodItems;
 }
 
-void transaction_parser::get_warehouse(string name)
+unordered_map<string, warehouse> transaction_parser::get_warehouse_map()
 {
-  //return warehouses[name];
-}
-
-boost::gregorian::date transaction_parser::get_start_date()
-{
-
+  return warehouses;
 }
 
 int transaction_parser::get_number_of_days()
@@ -76,7 +70,7 @@ void transaction_parser::process_line(string line)
   }
   else if ("Start" == firstWord)
   {
-    process_start_date(iss);
+    process_start_date();
   }
   else if ("Receive:" == firstWord) 
   {
@@ -132,13 +126,9 @@ void transaction_parser::process_warehouse(istringstream & iss)
   // Add warehouse to warehouse map..
 }
 
-void transaction_parser::process_start_date(istringstream & iss) 
+void transaction_parser::process_start_date() 
 {
-  iss.ignore(256, ':');
-  string date;
-  iss >> date;
-
-  cout << date << endl;
+  startDate = 0;
 }
 
 void transaction_parser::process_receive(istringstream & iss) 
