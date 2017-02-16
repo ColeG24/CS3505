@@ -11,6 +11,10 @@ warehouse::warehouse(string name) :
   name(name)
 {}
 
+warehouse::warehouse () :
+  name("")
+{}
+
 vector<string> warehouse::get_upc_codes() 
 {
   // not implementing yet, because not sure if we need this functionality

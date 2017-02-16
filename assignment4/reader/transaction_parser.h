@@ -5,8 +5,8 @@
 #include "../processor/food_item.h"
 #include "../processor/warehouse.h"
 
-#include "request.h"
-#include "receive.h"
+#include "transaction.h"
+#include "file_data.h"
 
 #include <sstream>
 
@@ -17,8 +17,7 @@ class transaction_parser
 {
   private:
     // Vector of requests and recieves for each index(day).
-    std::vector <std::vector<request>> requests; 
-    std::vector <std::vector<receive>> receives;
+    std::vector <std::vector<transaction>> transactions;
 
     // Maps name of warehouse to that warehouse.
     std::unordered_map <std::string, warehouse> warehouses;
@@ -28,6 +27,7 @@ class transaction_parser
     bool reachedEnd;
     int numDays;
     int startDate;
+    file_data data;
 
     void process_line(std::string line);
     void process_food_item(std::istringstream & iss);
@@ -40,18 +40,8 @@ class transaction_parser
 
   public:
     transaction_parser(std::string filename);
-   
-    std::vector<std::vector<request>> get_requests();
 
-    std::vector<std::vector<receive>> get_receives();
-
-    std::unordered_map<std::string, warehouse> get_warehouse_map();
-
-    std::unordered_map<std::string, food_item> get_food_items_map();;
-
-    int get_number_of_days();
-
-    void add_day();
+    file_data get_file_data() const;
 };
 
 #endif

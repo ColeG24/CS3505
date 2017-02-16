@@ -1,21 +1,23 @@
 #include <string.h>
 
-#ifndef RECEIVE_H
-#define RECEIVE_H
+#ifndef TRANSACTION_H
+#define TRANSACTION_H
 
-class receive
+class transaction
 {
   private:
     std::string upc;
     std::string warehouseName;
+    std::string type;
     int count;
 
   public:
-    receive(std::string upc, std::string warehouseName, int count);
+    transaction(std::string upc, std::string warehouseName, int count, std::string type);
 
     std::string get_upc();
     std::string get_warehouse_name();
     int get_count();
+    std::string get_type();
 };
 
 #endif

@@ -4,8 +4,8 @@
 
 #include "../processor/food_item.h"
 #include "../processor/warehouse.h"
-#include "request.h"
-#include "receive.h"
+#include "transaction.h"
+#include "file_data.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -13,45 +13,25 @@
 using namespace std;
 
 transaction_parser::transaction_parser(string filename) :
-  reachedEnd(false)
+  reachedEnd(false), numDays(0)
 {
-  // TODO make sure we handle bad files ok
   ifstream file(filename);
   std::string line;
   while (getline(file, line))
   {
     process_line(line);  
   }
+
+  // Store all data into data struct.
+  data.transactions = transactions;
+  data.warehouses = warehouses;
+  data.foodItems = foodItems;
+  data.numDays = numDays;
 }
 
-vector<vector<request>> transaction_parser::get_requests()
+file_data transaction_parser::get_file_data() const
 {
-  return requests;
-}
-
-vector<vector<receive>> transaction_parser::get_receives()
-{
-  return receives;
-}
-
-unordered_map<string, food_item> transaction_parser::get_food_items_map()
-{
-  return foodItems;
-}
-
-unordered_map<string, warehouse> transaction_parser::get_warehouse_map()
-{
-  return warehouses;
-}
-
-int transaction_parser::get_number_of_days()
-{
-  return numDays;
-}
-
-void transaction_parser::add_day()
-{
-  numDays++;
+  return data;
 }
 
 void transaction_parser::process_line(string line) 
@@ -107,8 +87,6 @@ void transaction_parser::process_food_item(istringstream & iss)
   string name;
   getline(iss, name);
 
-  cout << upc << " " << shelfLife << " " << name << endl;
-
   food_item food(name, upc, shelfLife);
 
   foodItems.emplace(upc, food);
@@ -119,9 +97,6 @@ void transaction_parser::process_warehouse(istringstream & iss)
   iss.ignore(256, '-');
   string warehouseName;
   iss >> warehouseName;
-
-  cout << warehouseName << endl;
-
   warehouse warehouse (warehouseName);
 
   warehouses.emplace(warehouseName, warehouse);
@@ -131,11 +106,8 @@ void transaction_parser::process_start_date()
 {
   startDate = 0;
   
-  vector<request> requestStart;
-  requests.push_back(requestStart);
-
-  vector<receive> receiveStart;
-  receives.push_back(receiveStart);
+  vector<transaction> tranStart;
+  transactions.push_back(tranStart);
 }
 
 void transaction_parser::process_receive(istringstream & iss) 
@@ -149,11 +121,9 @@ void transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  receive receive (upc, warehouse, count);
+  transaction receive (upc, warehouse, count, "receive");
 
-  receives[numDays].push_back(receive);
-
-  cout << upc << " " << count << " " << warehouse << endl;
+  transactions[numDays].push_back(receive);
 }
 
 void transaction_parser::process_request(istringstream & iss)
@@ -167,21 +137,17 @@ void transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  request request (upc, warehouse, count);
+  transaction request (upc, warehouse, count, "request");
 
-  requests[numDays].push_back(request);
-
-  cout << upc << " " << count << " " << warehouse << endl;
+  transactions[numDays].push_back(request);
 }
 
 void transaction_parser::process_next()
 {
-  add_day();
-  vector<request> requestsForDay;
-  requests.push_back(requestsForDay);
+  numDays++;
 
-  vector<receive> receiveForDay;
-  receives.push_back(receiveForDay);
+  vector<transaction> transForDay;
+  transactions.push_back(transForDay);
 }
 
 void transaction_parser::process_end()

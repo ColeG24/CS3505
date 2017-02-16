@@ -17,6 +17,8 @@ class warehouse
   public:
     warehouse(std::string name);
     
+    warehouse();
+
     std::vector<std::string> get_upc_codes();
 
     void request(food_item foodItem, int count);

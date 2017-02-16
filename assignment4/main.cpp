@@ -1,5 +1,11 @@
 #include "reader/transaction_parser.h"
+#include "reader/file_data.h"
+#include "reader/transaction.h"
+#include "processor/food_item.h"
+#include "processor/warehouse.h"
+#include <vector>
 #include <string>
+#include <unordered_map>
 #include <iostream>
 
 using namespace std;
@@ -14,6 +20,8 @@ int main(int argc, char* argv[])
 
   string filename = argv[1];
   transaction_parser parser(filename);
-  
+
+  file_data data = parser.get_file_data();
+
   return 0;
 }

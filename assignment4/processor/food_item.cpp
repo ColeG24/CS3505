@@ -7,6 +7,10 @@ food_item::food_item(string name, string upc, int shelfLife) :
   upc(upc), name(name), shelfLife(shelfLife)
 {}
 
+food_item::food_item () :
+  upc(""), name(""), shelfLife(0)
+{}
+
 string food_item::get_upc() const
 {
   return upc; 
