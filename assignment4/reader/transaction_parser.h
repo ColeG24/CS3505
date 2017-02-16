@@ -16,7 +16,7 @@
 class transaction_parser
 {
   private:
-    // Maps the date to the requests and recieves of that date.
+    // Vector of requests and recieves for each index(day).
     std::vector <std::vector<request>> requests; 
     std::vector <std::vector<receive>> receives;
 
@@ -41,9 +41,9 @@ class transaction_parser
   public:
     transaction_parser(std::string filename);
    
-    std::vector<std::vector<request>> get_requests_map();
+    std::vector<std::vector<request>> get_requests();
 
-    std::vector<std::vector<receive>> get_receives_map();
+    std::vector<std::vector<receive>> get_receives();
 
     std::unordered_map<std::string, warehouse> get_warehouse_map();
 
