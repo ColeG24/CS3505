@@ -18,8 +18,8 @@ class transaction_parser
   private:
     std::unordered_map <std::string, std::vector<request>> requests;
     std::unordered_map <std::string, std::vector<receive>> receieves;
+    std::unordered_map <std::string, warehouse> warehouses;
     std::vector<food_item> foodItems;
-    std::vector<warehouse> warehouses;
     bool reachedEnd;
     int numDays;
     boost::gregorian::date startDate;
@@ -40,13 +40,15 @@ class transaction_parser
 
     std::vector<receive> get_receives(boost::gregorian::date startDate);
 
-    std::vector<food_item> get_food_items();
+    void get_warehouse(std::string name);
 
-    std::vector<warehouse> get_warehouses();
+    std::vector<food_item> get_food_items();
 
     boost::gregorian::date get_start_date();
 
     int get_number_of_days();
+
+    void add_day();
 };
 
 #endif

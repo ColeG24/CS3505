@@ -39,9 +39,9 @@ vector<food_item> transaction_parser::get_food_items()
 
 }
 
-vector<warehouse> transaction_parser::get_warehouses()
+void transaction_parser::get_warehouse(string name)
 {
-
+  //return warehouses[name];
 }
 
 boost::gregorian::date transaction_parser::get_start_date()
@@ -51,7 +51,12 @@ boost::gregorian::date transaction_parser::get_start_date()
 
 int transaction_parser::get_number_of_days()
 {
+  return numDays;
+}
 
+void transaction_parser::add_day()
+{
+  numDays++;
 }
 
 void transaction_parser::process_line(string line) 
@@ -109,27 +114,65 @@ void transaction_parser::process_food_item(istringstream & iss)
 
   cout << upc << " " << shelfLife << " " << name << endl;
 
+  //food_item food (name, upc, shelfLife);
+
 }
 
 void transaction_parser::process_warehouse(istringstream & iss)
 {
+  iss.ignore(256, '-');
+  string warehouseName;
+  iss >> warehouseName;
+
+  cout << warehouseName << endl;
+
+  // Create warehouse and add to warehouses.
+  //  warehouse warehouse (warehouseName);
+
+  // Add warehouse to warehouse map..
 }
 
 void transaction_parser::process_start_date(istringstream & iss) 
 {
+  iss.ignore(256, ':');
+  string date;
+  iss >> date;
+
+  cout << date << endl;
 }
 
 void transaction_parser::process_receive(istringstream & iss) 
 {
+  string upc;
+  iss >> upc;
+
+  int count;
+  iss >> count;
+
+  string warehouse;
+  iss >> warehouse;
+
+  cout << upc << " " << count << " " << warehouse << endl;
 }
 
 void transaction_parser::process_request(istringstream & iss)
 {
+  
+  string upc;
+  iss >> upc;
+
+  int count;
+  iss >> count;
+
+  string warehouse;
+  iss >> warehouse;
+
+  cout << upc << " " << count << " " << warehouse << endl;
 }
 
 void transaction_parser::process_next()
 {
-
+  add_day();
 }
 
 void transaction_parser::process_end()
