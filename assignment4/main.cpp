@@ -26,5 +26,17 @@ int main(int argc, char* argv[])
 
   processor process (data);
 
+  vector<food_item> wellStockedFood = process.get_wellstocked_food();
+
+  vector<food_item> unstockedFood = process.get_unstocked_food();
+
+  cout << "All Well Stocked Food." << endl;
+  for (int i = 0; i < wellStockedFood.size(); i++)
+    cout << wellStockedFood[i].get_upc() << endl;
+
+  cout << "All UNSTOCKED FOOD. " << endl;
+  for (int i = 0; i < unstockedFood.size(); i++)
+    cout << unstockedFood[i].get_upc() << endl;
+
   return 0;
 }

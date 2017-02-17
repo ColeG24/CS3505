@@ -26,11 +26,13 @@ class warehouse
     
     warehouse();
 
-    std::vector<std::string> get_upc_codes();
+    std::vector<std::string> get_upc_codes() const;
     
     void remove_at_expiration_date(const int expirationDate); 
     
     void process_transaction(transaction trans, food_item foodItem);
+
+    std::string get_name();
 };
 
 #endif
