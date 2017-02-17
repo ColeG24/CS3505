@@ -2,6 +2,7 @@
 #include <queue>
 #include <vector>
 #include <unordered_map>
+#include <unordered_set>
 #include "inventory_item.h"
 #include "../reader/transaction.h"
 
@@ -14,7 +15,7 @@ class warehouse
   private:
     std::string name;
     std::unordered_map<std::string, std::queue<inventory_item>> inventoryMap; // Maps upc code to vector of inventory items by time we added
-    std::unordered_map<std::string, std::vector<inventory_item>> expirationDateMap; // Maps expiration date to all inventory items that share expiration date. 
+    std::unordered_map<std::string, std::unordered_map<std::string, inventory_item>> expirationDateMap; // Maps expiration date to all inventory items that share expiration date. 
 
     void request(food_item foodItem, int count);
 
