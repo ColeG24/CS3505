@@ -7,6 +7,4 @@ Receive: 0353264991 6 Tacoma
 Receive: 0353264991 2 Scottsdale
 Next day:
 Receive: 0353264991 2 Scottsdale
-Next day:
-Next day:
 End

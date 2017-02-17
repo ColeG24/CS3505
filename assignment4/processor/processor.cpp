@@ -20,6 +20,8 @@ void processor::preprocess()
 
   for (int i = 0; i <= data.numDays; i++)
   {
+    cout << "Total Days: " << data.numDays << endl;
+    cout << "Day: " << i << endl;
     removeExpiredFood(i);
 
     vector<transaction> transactionsForDay = data.transactions[i];
@@ -75,32 +77,32 @@ void processor::compute_unstocked_and_wellstocked_products()
     allFoodNotSeen.insert(currFood.get_upc());
   }
 
-  cout << "All food Initialized." << endl;
-
   for (int i = 0; i < warehouseNames.size(); i++)
   {
     unordered_set<string> warehouseUPCS;
     vector<string>  warehouseFoods = data.warehouses[warehouseNames[i]].get_upc_codes();
-    cout << "Warehouse: " << i << endl;
-    cout << "whf size " << warehouseFoods.size() << endl;
+    cout << "Number of foods in warehouse " << data.warehouses[warehouseNames[i]].get_name() << " " << warehouseFoods.size() << endl;
     for (int j = 0; j < warehouseFoods.size(); j++)
     {
-      cout << "Food: " << j << endl;
-      cout << "size: " << warehouseFoods.size() << endl;
       string currupc = warehouseFoods[j];
       if (warehouseUPCS.find(currupc) != warehouseUPCS.end())
       {
 	continue;
       }
       warehouseUPCS.insert(currupc);
-      if (allFoodNotSeen.find(currupc) != allFoodNotSeen.end())
+      if (allFoodNotSeen.find(currupc) != allFoodNotSeen.end()) // Found current upc_code.
       {
+	cout << "Deleting: " << currupc << " from allFoodNotSeen" << endl;
 	allFoodNotSeen.erase(currupc);
 	upcToQuantity.emplace(currupc, 1);
+	cout << "Added 1 count to upcToQuantity.. " << endl;
       }
       else
       {
+	cout << "current UPC code not found in all foodsnot seen" << endl;
+	cout << "upcToQuantity count: " << upcToQuantity.size() << endl;
 	upcToQuantity[currupc]++;
+	// If # of times we saw a upc = # of warehouses, then it is well stocked. 
 	if (upcToQuantity[currupc] == 2)
         {
 	  wellStockedFood.push_back(data.foodItems[currupc]);
@@ -108,8 +110,6 @@ void processor::compute_unstocked_and_wellstocked_products()
       }
     }
   }
-
-  cout << "All warehouses processed" << endl;
   for (const auto& elem: allFoodNotSeen)
   {
     unstockedFood.push_back(data.foodItems[elem]);
