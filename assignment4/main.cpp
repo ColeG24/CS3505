@@ -3,6 +3,7 @@
 #include "reader/transaction.h"
 #include "processor/food_item.h"
 #include "processor/warehouse.h"
+#include "processor/processor.h"
 #include <vector>
 #include <string>
 #include <unordered_map>
@@ -22,6 +23,8 @@ int main(int argc, char* argv[])
   transaction_parser parser(filename);
 
   file_data data = parser.get_file_data();
+
+  processor process (data);
 
   return 0;
 }

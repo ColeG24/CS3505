@@ -121,7 +121,7 @@ void transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  transaction receive (upc, warehouse, count, "receive");
+  transaction receive (upc, warehouse, count, "receive", numDays);
 
   transactions[numDays].push_back(receive);
 }
@@ -137,7 +137,7 @@ void transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  transaction request (upc, warehouse, count, "request");
+  transaction request (upc, warehouse, count, "request", numDays);
 
   transactions[numDays].push_back(request);
 }

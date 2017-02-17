@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include "warehouse.h"
 #include "inventory_item.h"
+#include "../reader/transaction.h"
 #include <string>
 #include <queue>
 
@@ -18,6 +19,18 @@ warehouse::warehouse () :
 vector<string> warehouse::get_upc_codes() 
 {
   // not implementing yet, because not sure if we need this functionality
+}
+
+void warehouse::process_transaction(transaction trans, food_item foodItem)
+{
+  if (trans.get_type() == "request")
+  {
+    request(foodItem, trans.get_count());
+  }
+  else 
+  {
+    receive(foodItem, trans.get_count(), trans.get_date());
+  }
 }
 
 void warehouse::request(food_item foodItem, int count) 
