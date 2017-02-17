@@ -30,25 +30,27 @@ int main(int argc, char* argv[])
 
   vector<food_item> unstockedFood = process.get_unstocked_food();
 
+  vector <food_item> top3 = process.get_top3_products();
+
   cout << "Report by Cole Gordon & Philipp Hojnacki. " << endl;
 
-  cout << " " << endl;
-
-  cout << "Unstocked Products: " << endl;
+  cout << endl << "Unstocked Products: " << endl;
   for (int i = 0; i < unstockedFood.size(); i++)
   {
     cout << unstockedFood[i].get_upc() << " " << unstockedFood[i].get_name() << endl;
   }
 
-  cout << " " << endl;
-
-  cout << "Well-Stocked Products: " << endl;
+  cout << endl << "Well-Stocked Products: " << endl;
   for (int i = 0; i < wellStockedFood.size(); i++)
   {
     cout << wellStockedFood[i].get_upc() << " " << wellStockedFood[i].get_name() << endl;
   }
 
-  cout << " " << endl;
+  cout << endl << "Most Popular Products: " << endl;
+  for (int i = 0; i < top3.size(); i++)
+  {
+    cout << top3[i].get_upc() << " " << top3[i].get_name() << endl;
+  }
 
   return 0;
 }
