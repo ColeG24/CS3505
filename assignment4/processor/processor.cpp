@@ -23,7 +23,7 @@ void processor::preprocess()
   {
     removeExpiredFood(i);
 
-    vector<transaction> transactionsForDay = data.transactions[i];
+    vector<transaction> & transactionsForDay = data.transactions[i];
 
     for (int j = 0; j < transactionsForDay.size(); j++)
     {

@@ -86,21 +86,15 @@ void warehouse::request(food_item & foodItem, int count)
  */
 void warehouse::receive(food_item & foodItem, int count, int currDate)
 {
-  cout << "Receive Beginn" << endl;
   
   inventory_item item (foodItem, count, currDate);
   
-  cout << item.get_expiration_date() << endl;
-   
-
-
   // Add to inventory map
   if (inventoryMap.find(foodItem.get_upc()) != inventoryMap.end()) // We have this item in inventory already
   {
     
     queue<inventory_item> & items = inventoryMap[foodItem.get_upc()];
 
-    cout << "Size of queue: " <<  items.size() << endl;
     if (items.back().get_expiration_date() == item.get_expiration_date())
     {
       // Then we can just increment quantity and be done
@@ -121,7 +115,6 @@ void warehouse::receive(food_item & foodItem, int count, int currDate)
     inventoryMap.emplace(foodItem.get_upc(), inventoryItems);
   }
 
-  cout << item.get_expiration_date() << endl;
   // Add to expiration date map  
   if (expirationDateMap.find("" + item.get_expiration_date()) != expirationDateMap.end())
   {
