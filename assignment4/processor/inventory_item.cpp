@@ -8,6 +8,7 @@ inventory_item::inventory_item(const food_item & foodItem, int quantity, int cur
   quantity(quantity), foodItem(foodItem)
 {
   // Calculate expiration date from food item and current date
+  expirationDate = currDate + foodItem.get_shelf_life();
 }
 
 int inventory_item::get_quantity() 
