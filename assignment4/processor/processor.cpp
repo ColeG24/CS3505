@@ -13,6 +13,7 @@ processor::processor(file_data & data):
   initialize();
   preprocess();
   compute_unstocked_and_wellstocked_products();
+  compute_top_3_products();
 }
 
 void processor::preprocess()
@@ -20,13 +21,10 @@ void processor::preprocess()
 
   for (int i = 0; i <= data.numDays; i++)
   {
-    cout << "Total Days: " << data.numDays << endl;
-    cout << "Day: " << i << endl;
     removeExpiredFood(i);
 
     vector<transaction> transactionsForDay = data.transactions[i];
 
-    cout << "tfd size " << transactionsForDay.size() << endl;
     for (int j = 0; j < transactionsForDay.size(); j++)
     {
       transaction & trans = transactionsForDay[j];
@@ -45,14 +43,12 @@ void processor::initialize()
   warehouseNames.reserve(data.warehouses.size());
   for (auto kv : data.warehouses)
   {
-    cout << kv.first << endl;
     warehouseNames.push_back(kv.first);
   }
 
   allFood.reserve(data.foodItems.size());
   for (auto kv : data.foodItems)
   {
-    cout << kv.second.get_name() << endl;
     allFood.push_back(kv.second);
   }
 }
@@ -81,31 +77,25 @@ void processor::compute_unstocked_and_wellstocked_products()
   {
     unordered_set<string> warehouseUPCS;
     vector<string>  warehouseFoods = data.warehouses[warehouseNames[i]].get_upc_codes();
-    cout << "Number of foods in warehouse " << data.warehouses[warehouseNames[i]].get_name() << " " << warehouseFoods.size() << endl;
     for (int j = 0; j < warehouseFoods.size(); j++)
     {
       string currupc = warehouseFoods[j];
       if (warehouseUPCS.find(currupc) != warehouseUPCS.end())
       {
-	continue;
+	      continue;
       }
       warehouseUPCS.insert(currupc);
       if (allFoodNotSeen.find(currupc) != allFoodNotSeen.end()) // Found current upc_code.
       {
-	cout << "Deleting: " << currupc << " from allFoodNotSeen" << endl;
-	allFoodNotSeen.erase(currupc);
-	upcToQuantity.emplace(currupc, 1);
-	cout << "Added 1 count to upcToQuantity.. " << endl;
+	      allFoodNotSeen.erase(currupc);
+	      upcToQuantity.emplace(currupc, 1);
       }
       else
       {
-	cout << "current UPC code not found in all foodsnot seen" << endl;
-	cout << "upcToQuantity count: " << upcToQuantity.size() << endl;
-	upcToQuantity[currupc]++;
-	// If # of times we saw a upc = # of warehouses, then it is well stocked. 
-	if (upcToQuantity[currupc] == 2)
+	      upcToQuantity[currupc]++;
+	      if (upcToQuantity[currupc] == 2)
         {
-	  wellStockedFood.push_back(data.foodItems[currupc]);
+	        wellStockedFood.push_back(data.foodItems[currupc]);
         }
       }
     }
@@ -130,3 +120,58 @@ vector<food_item> processor::get_unstocked_food()
 {
   return unstockedFood;
 }
+
+void processor::compute_top_3_products() 
+{
+  unordered_map<string, int> requestToQuantityMap;
+  for (int i = 0; i < data.transactions.size(); i++) 
+  {
+    vector<transaction> & transForDay = data.transactions[i];
+    for (int j = 0; j < transForDay.size(); j++)
+    { 
+      transaction & trans = transForDay[j];
+      if (trans.get_type() != "request") // Process only requests
+      {
+        continue;
+      }
+
+      if (requestToQuantityMap.find(trans.get_upc()) != requestToQuantityMap.end())
+      {
+        requestToQuantityMap[trans.get_upc()] += trans.get_count();
+      }
+      else 
+      {
+        requestToQuantityMap.emplace(trans.get_upc(), trans.get_count());
+      }
+    }  
+  }
+  vector<int> largestQuantities;
+  largestQuantities.reserve(3);
+  vector <string> correspondingUPC;
+  correspondingUPC.reserve(3);
+  top3.reserve(3);
+
+  int largestQuantity = 0;
+  for (int i = 0; i < 3; i++) 
+  {
+    if (requestToQuantityMap.size() == 0)
+    {
+      break;
+    }
+
+    largestQuantities.push_back(-1);
+    correspondingUPC.push_back("");
+
+    for (auto kv : requestToQuantityMap)
+    {
+      if (kv.second > largestQuantities[i]) 
+      {
+        largestQuantities[i] = kv.second;
+        correspondingUPC[i] = kv.first;
+      }
+    }
+    requestToQuantityMap.erase(correspondingUPC[i]);
+    top3.push_back(data.foodItems[correspondingUPC[i]]);
+  }
+}
+

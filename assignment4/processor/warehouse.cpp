@@ -86,16 +86,20 @@ void warehouse::request(food_item foodItem, int count)
  */
 void warehouse::receive(food_item foodItem, int count, int currDate)
 {
-  cout << "Receive Begin" << endl;
+  cout << "Receive Beginn" << endl;
+  
   inventory_item item (foodItem, count, currDate);
-
+  
   cout << item.get_expiration_date() << endl;
- 
+   
+
+
   // Add to inventory map
   if (inventoryMap.find(foodItem.get_upc()) != inventoryMap.end()) // We have this item in inventory already
   {
     
     queue<inventory_item> & items = inventoryMap[foodItem.get_upc()];
+
     cout << "Size of queue: " <<  items.size() << endl;
     if (items.back().get_expiration_date() == item.get_expiration_date())
     {
@@ -108,25 +112,19 @@ void warehouse::receive(food_item foodItem, int count, int currDate)
       // This needs to be pushed on the queue
       items.push(item);
     }
-    cout << "Size of queue: " << items.size() << endl;
   }
   else // We dont have this item in inventory
   {
-    cout << "item not in inventory yet" << endl;
     // Create new queue and add to inventory map
     queue<inventory_item> inventoryItems;
-    cout << "new que created" << endl;
     inventoryItems.push(item);
-    cout << "pushed item onto queue" << endl;
     inventoryMap.emplace(foodItem.get_upc(), inventoryItems);
-    cout << "add queue with fooditem upc to inventory map." << endl;
   }
 
   cout << item.get_expiration_date() << endl;
   // Add to expiration date map  
   if (expirationDateMap.find("" + item.get_expiration_date()) != expirationDateMap.end())
   {
-    cout << "Adding item to expiration date map" << endl;
     // Add item to map
     expirationDateMap["" + item.get_expiration_date()].emplace(item.get_upc(), item);
   }
@@ -135,9 +133,7 @@ void warehouse::receive(food_item foodItem, int count, int currDate)
     // Create new map and add item, then add to expiration map
     unordered_map<string, inventory_item> inventoryItems;
     inventoryItems.emplace(item.get_upc(), item);
-    cout << "expiredMap size : " << expirationDateMap.size() << endl;
     expirationDateMap.emplace("" + item.get_expiration_date(), inventoryItems);
-    cout << "expiredMap size: " << expirationDateMap.size() << endl;
   }    
 }
 
@@ -146,30 +142,23 @@ void warehouse::receive(food_item foodItem, int count, int currDate)
  */
 void warehouse::remove_at_expiration_date(const int expirationDate) 
 {
-  cout << "Expiration Date: " << expirationDate << endl;
   if (expirationDateMap.find("" + expirationDate) != expirationDateMap.end()) // There is expired items
   {
-    cout << "Iterating through expired Items Map.." << endl;
-    // TODO might be issue with key for expiredItemsMap not matching its values expiration date
     unordered_map<string, inventory_item> expiredItemsMap = expirationDateMap["" + expirationDate];
     for (auto kv: expiredItemsMap) 
     {    
       inventory_item &  expiredItem = kv.second;
       // delete this from inventory map
       queue<inventory_item> & candidates = inventoryMap[expiredItem.get_upc()];
-      cout << "queue size: " << candidates.size() << endl;
       // Remove all candidates with expired date
       while (candidates.front().get_expiration_date() == expirationDate)
       {
-        cout << "popping" << endl;
         candidates.pop();
-	cout << "queue size: " << candidates.size() << endl;
-	cout << "inventoryMap size: " << inventoryMap.size() << endl;
       }
       // If all inventory items with upc code are removed/expired. Delete that  entry in inventory map.
       if (candidates.size() == 0)
       {
-	inventoryMap.erase(expiredItem.get_upc());
+	      inventoryMap.erase(expiredItem.get_upc());
       }
     }
     // Erase expired items

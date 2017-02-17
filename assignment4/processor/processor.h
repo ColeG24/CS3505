@@ -28,6 +28,8 @@ class processor
 
   void compute_unstocked_and_wellstocked_products();
 
+  void compute_top_3_products();
+
  public:
   processor(file_data & data);
   std::vector<food_item> get_top3_products();
