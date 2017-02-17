@@ -63,3 +63,19 @@ void processor::removeExpiredFood(int day)
     warehouses[i].remove_at_expiration_date(day);
   }
 }
+
+vector<food_item> processor::get_unstocked_products()
+{
+
+}
+
+vector<food_item> processor::get_wellsocked_products()
+{
+
+}
+
+vector<food_item> processor::get_top3_products()
+{
+
+}
+
