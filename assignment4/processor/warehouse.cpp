@@ -35,7 +35,7 @@ vector<string> warehouse::get_upc_codes() const
   return upcCodes;
 }
 
-void warehouse::process_transaction(transaction trans, food_item foodItem)
+void warehouse::process_transaction(transaction & trans, food_item & foodItem)
 {
   if (trans.get_type() == "request")
   {
@@ -47,7 +47,7 @@ void warehouse::process_transaction(transaction trans, food_item foodItem)
   }
 }
 
-void warehouse::request(food_item foodItem, int count) 
+void warehouse::request(food_item & foodItem, int count) 
 {
   int amountLeft = count;
   if (inventoryMap.find(foodItem.get_upc()) != inventoryMap.end())
@@ -84,7 +84,7 @@ void warehouse::request(food_item foodItem, int count)
 /*
  * Expects to recieve food in order
  */
-void warehouse::receive(food_item foodItem, int count, int currDate)
+void warehouse::receive(food_item & foodItem, int count, int currDate)
 {
   cout << "Receive Beginn" << endl;
   

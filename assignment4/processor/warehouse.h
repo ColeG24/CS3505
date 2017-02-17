@@ -17,9 +17,9 @@ class warehouse
     std::unordered_map<std::string, std::queue<inventory_item>> inventoryMap; // Maps upc code to vector of inventory items by time we added
     std::unordered_map<std::string, std::unordered_map<std::string, inventory_item>> expirationDateMap; // Maps expiration date to all inventory items that share expiration date. 
 
-    void request(food_item foodItem, int count);
+    void request(food_item & foodItem, int count);
 
-    void receive(food_item foodItem, int count, const int date);
+    void receive(food_item & foodItem, int count, const int date);
 
   public:
     warehouse(std::string name);
@@ -30,7 +30,7 @@ class warehouse
     
     void remove_at_expiration_date(const int expirationDate); 
     
-    void process_transaction(transaction trans, food_item foodItem);
+    void process_transaction(transaction & trans, food_item & foodItem);
 
     std::string get_name();
 };
