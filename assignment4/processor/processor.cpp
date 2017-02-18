@@ -1,3 +1,8 @@
+/*
+ * This classed is used to process a file_data. Passing the file_data object into the constructor automatically processes the data. 
+ * Use the accessors to get the processed information
+ */
+
 #include "processor.h"
 #include <vector>
 #include "food_item.h"
@@ -7,6 +12,9 @@
 
 using namespace std;
 
+/*
+ * Creates a new processor, which processes the passed in file data
+ */
 processor::processor(file_data & data):
   data(data)
 {
@@ -16,6 +24,9 @@ processor::processor(file_data & data):
   compute_top_3_products();
 }
 
+/*
+ * Runs the transactions against the warehouses, and handles all food expiration
+ */
 void processor::preprocess()
 {
 
@@ -38,6 +49,9 @@ void processor::preprocess()
   }
 }
 
+/*
+ * Initializes the member variables of processor using the data from file_data
+ */ 
 void processor::initialize()
 {
   warehouseNames.reserve(data.warehouses.size());
@@ -53,6 +67,9 @@ void processor::initialize()
   }
 }
 
+/*
+ * Removes the expired food from all warehouses for that day
+ */
 void processor::removeExpiredFood(int day)
 {
   for (int i = 0; i < warehouseNames.size(); i++)
@@ -61,6 +78,9 @@ void processor::removeExpiredFood(int day)
   }
 }
 
+/*
+ * Computes both the unstocked products and well stocked products.
+ */
 void processor::compute_unstocked_and_wellstocked_products()
 {
   unordered_set<string> allFoodNotSeen;
@@ -106,21 +126,34 @@ void processor::compute_unstocked_and_wellstocked_products()
   }
 }
 
+/*
+ * Returns a vector oup to the top 3 products
+ */
 vector<food_item> processor::get_top3_products()
 {
   return top3;
 }
 
+/*
+ * Returns a vector of all the well stocked food. Well stocked food is food items that are in
+ * multiple warehouses by the end of the simulation
+ */
 vector<food_item> processor::get_wellstocked_food()
 {
   return wellStockedFood;
 }
 
+/*
+ * Returns all food that is not found in any warehouses
+ */
 vector<food_item> processor::get_unstocked_food()
 {
   return unstockedFood;
 }
 
+/*
+ * Computes the top 3 products and stores into top3 vector
+ */
 void processor::compute_top_3_products() 
 {
   unordered_map<string, int> requestToQuantityMap;

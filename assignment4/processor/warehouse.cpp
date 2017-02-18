@@ -1,3 +1,8 @@
+/*
+ * This class is used to represent a warehouse. Each warehouse has a name, and an inventory.
+ * The inventory will store any food item and its quantity and expiration date.
+ */
+
 #include <vector>
 #include <unordered_map>
 #include "warehouse.h"
@@ -10,6 +15,9 @@
 
 using namespace std;
 
+/*
+ * Creates a new warehouse of name. Warehouses contain inventory items.
+ */
 warehouse::warehouse(string name) :
   name(name)
 {
@@ -25,6 +33,9 @@ string warehouse::get_name()
   return name;
 }
 
+/*
+ * Returns all upc_codes of food_items in this warehouse
+ */
 vector<string> warehouse::get_upc_codes() const 
 {
   vector<string> upcCodes;
@@ -35,6 +46,10 @@ vector<string> warehouse::get_upc_codes() const
   return upcCodes;
 }
 
+/*
+ * Processes the transaction, and the assosiated food item to the transaction.
+ * Updates the warehouse depending on the transaction
+ */
 void warehouse::process_transaction(transaction & trans, food_item & foodItem)
 {
   if (trans.get_type() == "request")
@@ -47,6 +62,11 @@ void warehouse::process_transaction(transaction & trans, food_item & foodItem)
   }
 }
 
+/*
+ * Processes the food item and count, as a request. The request will remove from
+ * both the inventory map, and expiration date map. Request is not fully processed
+ * if there is not enough in inventory
+ */
 void warehouse::request(food_item & foodItem, int count) 
 {
   int amountLeft = count;
@@ -82,7 +102,8 @@ void warehouse::request(food_item & foodItem, int count)
 }
 
 /*
- * Expects to recieve food in order
+ * Expects to recieve food in order. Processes the food item, given the count and current date
+ * as a receive transaction. Adds to both inventory map, and expirationDateMap
  */
 void warehouse::receive(food_item & foodItem, int count, int currDate)
 {

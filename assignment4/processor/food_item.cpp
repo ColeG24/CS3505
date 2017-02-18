@@ -1,3 +1,7 @@
+/*
+ * Class to represent food items, which contain infomraiton about its upc, name and shelflife
+ */
+
 #include <string>
 #include "food_item.h"
 

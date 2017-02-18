@@ -1,3 +1,7 @@
+/*
+ * Class to represent an inventory item. Inventory items give information about the food item it holds, the quantity and the expiration date.
+ */
+
 #include "food_item.h"
 #include "inventory_item.h"
 #include <string>
