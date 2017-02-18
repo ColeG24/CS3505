@@ -1,7 +1,10 @@
+/*
+ *  Defines the transaction parser.
+ */
+
 #include "transaction_parser.h"
 #include <string>
 #include <unordered_map>
-
 #include "../processor/food_item.h"
 #include "../processor/warehouse.h"
 #include "transaction.h"
@@ -17,6 +20,8 @@ transaction_parser::transaction_parser(string filename) :
 {
   ifstream file(filename);
   std::string line;
+
+  // Process each line.
   while (getline(file, line))
   {
     process_line(line);  
@@ -34,6 +39,7 @@ file_data transaction_parser::get_file_data() const
   return data;
 }
 
+// Processes each line according to its first word.
 void transaction_parser::process_line(string line) 
 {
   istringstream iss(line);
@@ -72,6 +78,7 @@ void transaction_parser::process_line(string line)
   }
 }
 
+// Processes a food item.
 void transaction_parser::process_food_item(istringstream & iss) 
 {
   iss.ignore(256, ':');
@@ -92,6 +99,7 @@ void transaction_parser::process_food_item(istringstream & iss)
   foodItems.emplace(upc, food);
 }
 
+// Processes a warehouse.
 void transaction_parser::process_warehouse(istringstream & iss)
 {
   iss.ignore(256, '-');
@@ -102,6 +110,7 @@ void transaction_parser::process_warehouse(istringstream & iss)
   warehouses.emplace(warehouseName, warehouse);
 }
 
+// Processes the start date.
 void transaction_parser::process_start_date() 
 {
   startDate = 0;
@@ -110,6 +119,7 @@ void transaction_parser::process_start_date()
   transactions.push_back(tranStart);
 }
 
+// Processes a receive.
 void transaction_parser::process_receive(istringstream & iss) 
 {
   string upc;
@@ -121,11 +131,12 @@ void transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
+  // Create transaction and add to vector.
   transaction receive (upc, warehouse, count, "receive", numDays);
-
   transactions[numDays].push_back(receive);
 }
 
+// Processes a request.
 void transaction_parser::process_request(istringstream & iss)
 {
   string upc;
@@ -137,11 +148,12 @@ void transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
+  // Create transaction and add to vector.
   transaction request (upc, warehouse, count, "request", numDays);
-
   transactions[numDays].push_back(request);
 }
 
+// Processes the next day.
 void transaction_parser::process_next()
 {
   numDays++;
@@ -150,6 +162,7 @@ void transaction_parser::process_next()
   transactions.push_back(transForDay);
 }
 
+// Processes end of file.
 void transaction_parser::process_end()
 {
   reachedEnd = true;

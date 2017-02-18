@@ -1,3 +1,7 @@
+/*
+ *  Represents a single transaction.
+ */
+
 #include <string.h>
 
 #ifndef TRANSACTION_H
@@ -13,8 +17,10 @@ class transaction
     int date;
 
   public:
+    // Construtor
     transaction(std::string upc, std::string warehouseName, int count, std::string type, int date);
 
+    // Accessors
     std::string get_upc();
     std::string get_warehouse_name();
     int get_count();

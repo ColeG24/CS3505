@@ -1,12 +1,13 @@
+/*
+ *   A struct containing all transactions, warehouses, food items, and days.
+ */
+
 #include <string>
 #include <unordered_map>
 #include <vector>
-
 #include "../processor/food_item.h"
 #include "../processor/warehouse.h"
-
 #include "transaction.h"
-
 
 #ifndef FILE_DATA_H
 #define FILE_DATA_H
