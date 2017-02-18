@@ -1,3 +1,7 @@
+/*
+ *  The main entry of the program. 
+ */
+
 #include "reader/transaction_parser.h"
 #include "reader/file_data.h"
 #include "reader/transaction.h"
@@ -19,18 +23,23 @@ int main(int argc, char* argv[])
     return 0;
   }
 
+  // Get, parse, and process the file.
+
   string filename = argv[1];
   transaction_parser parser(filename);
-
   file_data data = parser.get_file_data();
-
   processor process (data);
 
+  // Retrieve report data.
+  
   vector<food_item> wellStockedFood = process.get_wellstocked_food();
 
   vector<food_item> unstockedFood = process.get_unstocked_food();
 
   vector <food_item> top3 = process.get_top3_products();
+
+
+  //**************GENERATE REPORT**************************
 
   cout << "Report by Cole Gordon & Philipp Hojnacki. " << endl;
 
@@ -51,6 +60,10 @@ int main(int argc, char* argv[])
   {
     cout << top3[i].get_upc() << " " << top3[i].get_name() << endl;
   }
+
+  cout << endl;
+
+  // Report generated, return.
 
   return 0;
 }
