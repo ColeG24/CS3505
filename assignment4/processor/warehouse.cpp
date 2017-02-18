@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
+/*i
  * This class is used to represent a warehouse. Each warehouse has a name, and an inventory.
  * The inventory will store any food item and its quantity and expiration date.
  */

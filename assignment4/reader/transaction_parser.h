@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnackie
+ */
+/*
  *  Parses the transaction data into easily readable data.
  */
 

@@ -1,4 +1,6 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ *
  *  The main entry of the program. 
  */
 

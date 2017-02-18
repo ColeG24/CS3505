@@ -1,3 +1,6 @@
+/*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
 #include <string>
 #include <queue>
 #include <vector>

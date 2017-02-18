@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnackie
+ */
+/*
  *  Represents a single transaction.
  */
 

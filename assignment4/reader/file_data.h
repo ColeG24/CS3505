@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
+/*
  *   A struct containing all transactions, warehouses, food items, and days.
  */
 

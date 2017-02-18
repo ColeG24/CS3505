@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
+/*
  * Class to represent food items, which contain infomraiton about its upc, name and shelflife
  */
 

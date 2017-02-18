@@ -1,3 +1,6 @@
+/*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
 #include "../reader/file_data.h"
 #include <vector>
 #include "food_item.h"

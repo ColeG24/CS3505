@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnackie
+ */
+/*
  *  Defines the transaction parser.
  */
 

@@ -1,3 +1,6 @@
+/*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
 #include "food_item.h" 
 #include <string>
 

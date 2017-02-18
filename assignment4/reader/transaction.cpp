@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnackie
+ */
+/*
  *  Class declaration for a single transaction.
  */
 

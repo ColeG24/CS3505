@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
+/*
  * This classed is used to process a file_data. Passing the file_data object into the constructor automatically processes the data. 
  * Use the accessors to get the processed information
  */

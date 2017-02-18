@@ -1,4 +1,7 @@
 /*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
+/*
  * Class to represent an inventory item. Inventory items give information about the food item it holds, the quantity and the expiration date.
  */
 

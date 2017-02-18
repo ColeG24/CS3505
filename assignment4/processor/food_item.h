@@ -1,3 +1,6 @@
+/*
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
+ */
 #include <string>
 
 #ifndef FOOD_ITEM_H
