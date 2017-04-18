@@ -33,7 +33,7 @@ processor::processor(transaction_parser & parser):
 void processor::preprocess()
 {
   transaction & trans;
-  transaction * transPtr 
+  transaction * transPtr; 
    while (true)
    {
      transPtr = trans.next_item();
@@ -49,7 +49,6 @@ void processor::preprocess()
       currWarehouse.process_transaction(trans, foodItem);
       delete trans;
     }
-  }
 }
 
 /*

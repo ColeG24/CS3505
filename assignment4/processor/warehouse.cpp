@@ -93,7 +93,7 @@ void warehouse::request(food_item & foodItem, int count)
 
         // Now erase from expiration date
         expirationDateMap["" + currItem.get_expiration_date()].erase(currItem.get_upc());
-        delete currItem;
+        delete &currItem;
       }
       if (candidates.size() == 0)
       {
@@ -112,7 +112,7 @@ void warehouse::request(food_item & foodItem, int count)
 void warehouse::receive(food_item & foodItem, int count, int currDate)
 {
   
-  inventory_item item & item = *new inventory_item(foodItem, count, currDate);
+  inventory_item & item = *new inventory_item(foodItem, count, currDate);
   
   // Add to inventory map
   if (inventoryMap.find(foodItem.get_upc()) != inventoryMap.end()) // We have this item in inventory already

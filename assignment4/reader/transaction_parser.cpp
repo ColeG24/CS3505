@@ -1,5 +1,5 @@
 /*
- * AUTHORS: Cole Gordon & Philipp Hojnackie
+ * AUTHORS: Cole Gordon & Philipp Hojnacki
  */
 /*
  *  Defines the transaction parser.
@@ -19,19 +19,20 @@
 using namespace std;
 
 transaction_parser::transaction_parser(string filename) :
-  reachedEnd(false), numDays(0), warehouses(*new unordered_map<string, warehouse>()), foodItems(*new unordered_map<string, food_item>(), file(*new ifstream(filename)))
+  reachedEnd(false), numDays(0), warehouses(*new unordered_map<string, warehouse>()), foodItems(*new unordered_map<string, food_item>()), file(*new ifstream(filename))
 {
   std::string line;
 
   // Process the warehouses and 
-  while (getline(file, line)
+  while (getline(file, line))
   {
     if (!process_header(line))
       break;
   }
+	
+  file_data data = get_file_data();
 
   // Store all data into data struct.
-  data.transactions = transactions;
   data.warehouses = warehouses;
   data.foodItems = foodItems;
   data.numDays = numDays;
@@ -66,7 +67,7 @@ bool transaction_parser::process_header(string & line)
   }
 }
 
-transaction & next_item() {
+transaction & transaction_parser::next_item() {
   
   string line;    
   string firstWord;

@@ -30,10 +30,11 @@ class transaction_parser
     bool reachedEnd;
     int numDays;
     int startDate;
+    file_data data;
     std::ifstream & file;
     
     // Helper methods for processing each possible line.
-    void process_header(std::string & line);
+    bool process_header(std::string & line);
     void process_line(std::string & line);
     void process_food_item(std::istringstream & iss);
     void process_warehouse(std::istringstream & iss);
@@ -47,7 +48,8 @@ class transaction_parser
     transaction_parser(std::string filename);
     std::vector<warehouse> & get_warehouses();
     std::vector<food_item> & get_food_items();
-    transaction* next_item();    
+    transaction next_item(); 
+    file_data get_file_data() const;  
 };
 
 #endif
