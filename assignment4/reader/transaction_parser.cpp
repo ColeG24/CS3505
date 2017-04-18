@@ -19,15 +19,15 @@
 using namespace std;
 
 transaction_parser::transaction_parser(string filename) :
-  reachedEnd(false), numDays(0)
+  reachedEnd(false), numDays(0), warehouses(*new unordered_map<string, warehouse>()), foodItems(*new unordered_map<string, food_item>(), file(*new ifstream(filename)))
 {
-  ifstream file(filename);
   std::string line;
 
-  // Process each line.
-  while (getline(file, line))
+  // Process the warehouses and 
+  while (getline(file, line)
   {
-    process_line(line);  
+    if (!process_header(line))
+      break;
   }
 
   // Store all data into data struct.
@@ -43,7 +43,7 @@ file_data transaction_parser::get_file_data() const
 }
 
 // Processes each line according to its first word.
-void transaction_parser::process_line(string line) 
+bool transaction_parser::process_header(string & line) 
 {
   istringstream iss(line);
 
@@ -53,31 +53,47 @@ void transaction_parser::process_line(string line)
   if ("FoodItem" == firstWord)
   {
     process_food_item(iss);
+    return true;
   }
   else if ("Warehouse" == firstWord)
   {
     process_warehouse(iss);
+    return true;
   }
-  else if ("Start" == firstWord)
+  else
   {
-    process_start_date();
+    return false;
   }
-  else if ("Receive:" == firstWord) 
+}
+
+transaction & next_item() {
+  
+  string line;    
+  string firstWord;
+  istringstream iss;    
+
+  do {
+    istringstream iss2(line);   
+    iss = iss2;
+    getline(file, line);    
+    iss >> firstWord; 
+    if ("Next" == firstWord)
+      numDays++;
   {
-    process_receive(iss);
+  while ("Next" == firstWord);
+
+  if ("Receive:" == firstWord) 
+  {
+    return & process_receive(iss);
   }
   else if ("Request:" == firstWord) 
   {
-    process_request(iss);
+    return & process_request(iss);
   }
-  else if ("Next" == firstWord)
-  {
-    process_next();
-  }
-  else if ("End" == firstWord)
+  else 
   {
     process_end();
-    return;
+    return NULL;
   }
 }
 
@@ -123,7 +139,7 @@ void transaction_parser::process_start_date()
 }
 
 // Processes a receive.
-void transaction_parser::process_receive(istringstream & iss) 
+transaction & transaction_parser::process_receive(istringstream & iss) 
 {
   string upc;
   iss >> upc;
@@ -134,13 +150,11 @@ void transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  // Create transaction and add to vector.
-  transaction receive (upc, warehouse, count, "receive", numDays);
-  transactions[numDays].push_back(receive);
+  return *new transacton (upc, warehouse, count, "receive", numDays);
 }
 
 // Processes a request.
-void transaction_parser::process_request(istringstream & iss)
+transaction & transaction_parser::process_request(istringstream & iss)
 {
   string upc;
   iss >> upc;
@@ -151,22 +165,20 @@ void transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  // Create transaction and add to vector.
-  transaction request (upc, warehouse, count, "request", numDays);
-  transactions[numDays].push_back(request);
+  return *new request (upc, warehouse, count, "request", numDays);
 }
 
-// Processes the next day.
-void transaction_parser::process_next()
-{
-  numDays++;
-
-  vector<transaction> transForDay;
-  transactions.push_back(transForDay);
-}
 
 // Processes end of file.
 void transaction_parser::process_end()
 {
   reachedEnd = true;
+}
+
+vector<warehouse>  transaction_parser::get_warehouses() {
+ return warehouses;
+}
+
+vector<food_item> transaction_parser::get_food_items() {
+ return warehouses;
 }

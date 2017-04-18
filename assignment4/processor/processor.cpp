@@ -18,8 +18,8 @@ using namespace std;
 /*
  * Creates a new processor, which processes the passed in file data
  */
-processor::processor(file_data & data):
-  data(data)
+processor::processor(transaction_parser & parser):
+  parser(parser)
 {
   initialize();
   preprocess();
@@ -32,22 +32,22 @@ processor::processor(file_data & data):
  */
 void processor::preprocess()
 {
+  transaction & trans;
+  transaction * transPtr 
+   while (true)
+   {
+     transPtr = trans.next_item();
+     if (transPtr == NULL)
+       return;
+     trans = *transPtr;
+      // Maybe should only do this once per date
+      removeExpiredFood(trans.get_date());
+    
+      food_item & foodItem = parser.get_food_items[trans.get_upc()];
 
-  for (int i = 0; i <= data.numDays; i++)
-  {
-    removeExpiredFood(i);
-
-    vector<transaction> & transactionsForDay = data.transactions[i];
-
-    for (int j = 0; j < transactionsForDay.size(); j++)
-    {
-      transaction & trans = transactionsForDay[j];
-
-      food_item & foodItem = data.foodItems[trans.get_upc()];
-
-      warehouse & currWarehouse = data.warehouses[trans.get_warehouse_name()]; 
-
+      warehouse & currWarehouse = parser.get_warehouses[trans.get_warehouse_name()]; 
       currWarehouse.process_transaction(trans, foodItem);
+      delete trans;
     }
   }
 }

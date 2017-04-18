@@ -5,7 +5,6 @@
  */
 
 #include "reader/transaction_parser.h"
-#include "reader/file_data.h"
 #include "reader/transaction.h"
 #include "processor/food_item.h"
 #include "processor/warehouse.h"
@@ -28,9 +27,8 @@ int main(int argc, char* argv[])
   // Get, parse, and process the file.
 
   string filename = argv[1];
-  transaction_parser parser(filename);
-  file_data data = parser.get_file_data();
-  processor process (data);
+  transaction_parser & parser = *new transaction_parser(filename);
+  processor process (parser);
 
   // Retrieve report data.
   

@@ -1,7 +1,7 @@
 /*
  * AUTHORS: Cole Gordon & Philipp Hojnacki
  */
-#include "../reader/file_data.h"
+#include "../reader/transaction_parser.h"
 #include <vector>
 #include "food_item.h"
 #include "warehouse.h"
@@ -10,8 +10,10 @@
 class processor
 {
  private:
-  file_data data;
-  
+  transaction_parser & parser;
+ 
+  int day;
+
   std::vector<food_item> allFood;
   std::vector<food_item> wellStockedFood;
   std::vector<food_item> unstockedFood;
@@ -34,7 +36,7 @@ class processor
   void compute_top_3_products();
 
  public:
-  processor(file_data & data);
+  processor(transaction_parser & parser);
   std::vector<food_item> get_top3_products();
   std::vector<food_item> get_wellstocked_food();
   std::vector<food_item> get_unstocked_food();
