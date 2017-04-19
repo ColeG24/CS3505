@@ -30,7 +30,6 @@ class transaction_parser
     bool reachedEnd;
     int numDays;
     int startDate;
-    file_data data;
     std::ifstream & file;
     
     // Helper methods for processing each possible line.

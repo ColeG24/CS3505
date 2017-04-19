@@ -59,12 +59,12 @@ transaction * transaction_parser::next_item() {
   
   string line;    
   string firstWord;
-  istringstream iss;    
+  istringstream * iss = NULL; 
 
   do {
-    istringstream iss(line);   
+    iss = new istringstream(line);   
     getline(file, line);    
-    iss >> firstWord; 
+    *iss >> firstWord; 
     if ("Next" == firstWord)
       numDays++;
   }
@@ -72,11 +72,11 @@ transaction * transaction_parser::next_item() {
 
   if ("Receive:" == firstWord) 
   {
-    return & process_receive(iss);
+    return & process_receive(*iss);
   }
   else if ("Request:" == firstWord) 
   {
-    return & process_request(iss);
+    return & process_request(*iss);
   }
   else 
   {

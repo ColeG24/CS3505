@@ -5,6 +5,7 @@
 #include <vector>
 #include "food_item.h"
 #include "warehouse.h"
+#include <string>
 #include <unordered_map>
 
 class processor
@@ -17,6 +18,9 @@ class processor
   std::vector<food_item> allFood;
   std::vector<food_item> wellStockedFood;
   std::vector<food_item> unstockedFood;
+
+  std::unordered_map<std::string, int> & requestToQuantityMap;
+  
 
   // Maps all requests upc codes to quantity.
   std::unordered_map<std::string, int> quantityMap;

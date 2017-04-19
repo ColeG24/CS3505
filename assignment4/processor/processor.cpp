@@ -9,8 +9,10 @@
 #include "processor.h"
 #include <vector>
 #include "food_item.h"
+#include <unordered_map>
 #include "../reader/transaction.h"
 #include <iostream>
+#include <string>
 
 using namespace std;
 
@@ -18,7 +20,7 @@ using namespace std;
  * Creates a new processor, which processes the passed in file data
  */
 processor::processor(transaction_parser & parser):
-  parser(parser)
+  parser(parser), requestToQuantityMap(*new unordered_map<string, int>())
 {
   initialize();
   preprocess();
@@ -31,22 +33,32 @@ processor::processor(transaction_parser & parser):
  */
 void processor::preprocess()
 {
-  transaction & trans;
-  transaction * transPtr; 
+   transaction * transPtr; 
    while (true)
    {
-     transPtr = trans.next_item();
+     transPtr = parser.next_item();
      if (transPtr == NULL)
        return;
-     trans = *transPtr;
-      // Maybe should only do this once per date
-      removeExpiredFood(trans.get_date());
-    
-      food_item & foodItem = parser.get_food_items[trans.get_upc()];
 
-      warehouse & currWarehouse = parser.get_warehouses[trans.get_warehouse_name()]; 
-      currWarehouse.process_transaction(trans, foodItem);
-      delete trans;
+       if (transPtr->get_type() == "request") // Process only requests
+       {
+        if (requestToQuantityMap.find(transPtr->get_upc()) != requestToQuantityMap.end())
+        {
+          requestToQuantityMap[transPtr->get_upc()] += transPtr->get_count();
+        }
+        else 
+        {
+          requestToQuantityMap.emplace(transPtr->get_upc(), transPtr->get_count());
+        }
+      }
+      // Maybe should only do this once per date
+      removeExpiredFood(transPtr->get_date());
+    
+      food_item & foodItem = parser.get_food_items()[transPtr->get_upc()];
+
+      warehouse & currWarehouse = parser.get_warehouses()[transPtr->get_warehouse_name()]; 
+      currWarehouse.process_transaction(*transPtr, foodItem);
+      delete transPtr;
     }
 }
 
@@ -56,13 +68,13 @@ void processor::preprocess()
 void processor::initialize()
 {
   warehouseNames.reserve(parser.get_warehouses().size());
-  for (auto kv : parser.get_warehouses)
+  for (auto kv : parser.get_warehouses())
   {
     warehouseNames.push_back(kv.first);
   }
 
-  allFood.reserve(parser.get_foodItems().size());
-  for (auto kv : parser.get_foodItems())
+  allFood.reserve(parser.get_food_items().size());
+  for (auto kv : parser.get_food_items())
   {
     allFood.push_back(kv.second);
   }
@@ -116,7 +128,7 @@ void processor::compute_unstocked_and_wellstocked_products()
 	      upcToQuantity[currupc]++;
 	      if (upcToQuantity[currupc] == 2)
         {
-	        wellStockedFood.push_back(parser.get_food_items[currupc]);
+	        wellStockedFood.push_back(parser.get_food_items()[currupc]);
         }
       }
     }
@@ -157,28 +169,6 @@ vector<food_item> processor::get_unstocked_food()
  */
 void processor::compute_top_3_products() 
 {
-  unordered_map<string, int> requestToQuantityMap;
-  for (int i = 0; i < data.transactions.size(); i++) 
-  {
-    vector<transaction> & transForDay = data.transactions[i];
-    for (int j = 0; j < transForDay.size(); j++)
-    { 
-      transaction & trans = transForDay[j];
-      if (trans.get_type() != "request") // Process only requests
-      {
-        continue;
-      }
-
-      if (requestToQuantityMap.find(trans.get_upc()) != requestToQuantityMap.end())
-      {
-        requestToQuantityMap[trans.get_upc()] += trans.get_count();
-      }
-      else 
-      {
-        requestToQuantityMap.emplace(trans.get_upc(), trans.get_count());
-      }
-    }  
-  }
   vector<int> largestQuantities;
   largestQuantities.reserve(3);
   vector <string> correspondingUPC;
