@@ -40,25 +40,25 @@ void processor::preprocess()
      if (transPtr == NULL)
        return;
 
-       if (transPtr->get_type() == "request") // Process only requests
-       {
-        if (requestToQuantityMap.find(transPtr->get_upc()) != requestToQuantityMap.end())
-        {
-          requestToQuantityMap[transPtr->get_upc()] += transPtr->get_count();
-        }
-        else 
-        {
-          requestToQuantityMap.emplace(transPtr->get_upc(), transPtr->get_count());
-        }
+     if (transPtr->get_type() == "request") // Process only requests
+     {
+      if (requestToQuantityMap.find(transPtr->get_upc()) != requestToQuantityMap.end())
+      {
+        requestToQuantityMap[transPtr->get_upc()] += transPtr->get_count();
       }
-      // Maybe should only do this once per date
-      removeExpiredFood(transPtr->get_date());
+      else 
+      {
+        requestToQuantityMap.emplace(transPtr->get_upc(), transPtr->get_count());
+      }
+     }
+     // Maybe should only do this once per date
+     removeExpiredFood(transPtr->get_date());
     
-      food_item & foodItem = parser.get_food_items()[transPtr->get_upc()];
+     food_item & foodItem = parser.get_food_items()[transPtr->get_upc()];
 
-      warehouse & currWarehouse = parser.get_warehouses()[transPtr->get_warehouse_name()]; 
-      currWarehouse.process_transaction(*transPtr, foodItem);
-      delete transPtr;
+     warehouse & currWarehouse = parser.get_warehouses()[transPtr->get_warehouse_name()]; 
+     currWarehouse.process_transaction(*transPtr, foodItem);
+     delete transPtr;
     }
 }
 

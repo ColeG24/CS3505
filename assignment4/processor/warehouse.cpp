@@ -93,7 +93,7 @@ void warehouse::request(food_item & foodItem, int count)
 
         // Now erase from expiration date
         expirationDateMap["" + currItem.get_expiration_date()].erase(currItem.get_upc());
-        delete &currItem;
+        //delete &currItem;
       }
       if (candidates.size() == 0)
       {

@@ -28,7 +28,7 @@ transaction_parser::transaction_parser(string filename) :
   {
     if (!process_header(line))
       break;
-  }	
+  }
 }
 
 // Processes each line according to its first word.
@@ -59,30 +59,36 @@ transaction * transaction_parser::next_item() {
   
   string line;    
   string firstWord;
+  transaction * tp = NULL;
   istringstream * iss = NULL; 
-
   do {
-    iss = new istringstream(line);   
-    getline(file, line);    
+    if (!getline(file, line))
+      return NULL;
+    iss = new istringstream(line);     
     *iss >> firstWord; 
     if ("Next" == firstWord)
+    {
+      delete iss;
       numDays++;
+    }
   }
   while ("Next" == firstWord);
 
   if ("Receive:" == firstWord) 
   {
-    return & process_receive(*iss);
+    tp = & process_receive(*iss);
   }
   else if ("Request:" == firstWord) 
   {
-    return & process_request(*iss);
+    tp = & process_request(*iss);
   }
   else 
-  {
+  { 
     process_end();
-    return NULL;
   }
+  if (iss != NULL)
+    delete iss;
+  return tp;
 }
 
 // Processes a food item.
