@@ -16,9 +16,9 @@
 class warehouse 
 {
   private:
-    std::string name;
-    std::unordered_map<std::string, std::queue<inventory_item>> inventoryMap; // Maps upc code to vector of inventory items by time we added
-    std::unordered_map<std::string, std::unordered_map<std::string, inventory_item>> expirationDateMap; // Maps expiration date to all inventory items that share expiration date. 
+    std::string & name;
+    std::unordered_map<std::string, std::queue<inventory_item>> & inventoryMap; // Maps upc code to vector of inventory items by time we added
+    std::unordered_map<std::string, std::unordered_map<std::string, inventory_item>> & expirationDateMap; // Maps expiration date to all inventory items that share expiration date. 
 
     void request(food_item & foodItem, int count);
 

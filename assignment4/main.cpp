@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
   // Retrieve report data.
   
-  vector<food_item> wellStockedFood = process.get_wellstocked_food();
+  vector<food_item> wellStockedFood = process.get_wellstocked_food(); 
 
   vector<food_item> unstockedFood = process.get_unstocked_food();
 

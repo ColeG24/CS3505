@@ -22,12 +22,12 @@ using namespace std;
  * Creates a new warehouse of name. Warehouses contain inventory items.
  */
 warehouse::warehouse(string name) :
-  name(name)
+  name(name), inventoryMap(*new unordered_map<string, queue<inventory_item>>()), expirationDateMap(*new unordered_map<string, unordered_map<string, inventory_item>>())
 {
 }
 
 warehouse::warehouse () :
-  name("")
+  name(* new string("")),  inventoryMap(*new unordered_map<string, queue<inventory_item>>()), expirationDateMap(*new unordered_map<string, unordered_map<std::string, inventory_item>>())
 {
 }
 

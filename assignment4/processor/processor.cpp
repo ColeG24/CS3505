@@ -23,7 +23,7 @@ processor::processor(transaction_parser & parser):
   parser(parser), requestToQuantityMap(*new unordered_map<string, int>())
 {
   initialize();
-  preprocess();
+  preprocess(); // All timing issues
   compute_unstocked_and_wellstocked_products();
   compute_top_3_products();
 }
