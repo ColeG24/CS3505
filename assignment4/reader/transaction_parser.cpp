@@ -28,19 +28,7 @@ transaction_parser::transaction_parser(string filename) :
   {
     if (!process_header(line))
       break;
-  }
-	
-  file_data data = get_file_data();
-
-  // Store all data into data struct.
-  data.warehouses = warehouses;
-  data.foodItems = foodItems;
-  data.numDays = numDays;
-}
-
-file_data transaction_parser::get_file_data() const
-{
-  return data;
+  }	
 }
 
 // Processes each line according to its first word.
@@ -67,20 +55,19 @@ bool transaction_parser::process_header(string & line)
   }
 }
 
-transaction & transaction_parser::next_item() {
+transaction * transaction_parser::next_item() {
   
   string line;    
   string firstWord;
   istringstream iss;    
 
   do {
-    istringstream iss2(line);   
-    iss = iss2;
+    istringstream iss(line);   
     getline(file, line);    
     iss >> firstWord; 
     if ("Next" == firstWord)
       numDays++;
-  {
+  }
   while ("Next" == firstWord);
 
   if ("Receive:" == firstWord) 
@@ -130,15 +117,6 @@ void transaction_parser::process_warehouse(istringstream & iss)
   warehouses.emplace(warehouseName, warehouse);
 }
 
-// Processes the start date.
-void transaction_parser::process_start_date() 
-{
-  startDate = 0;
-  
-  vector<transaction> tranStart;
-  transactions.push_back(tranStart);
-}
-
 // Processes a receive.
 transaction & transaction_parser::process_receive(istringstream & iss) 
 {
@@ -151,7 +129,7 @@ transaction & transaction_parser::process_receive(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  return *new transacton (upc, warehouse, count, "receive", numDays);
+  return *new transaction (upc, warehouse, count, "receive", numDays);
 }
 
 // Processes a request.
@@ -166,7 +144,7 @@ transaction & transaction_parser::process_request(istringstream & iss)
   string warehouse;
   iss >> warehouse;
 
-  return *new request (upc, warehouse, count, "request", numDays);
+  return *new transaction (upc, warehouse, count, "request", numDays);
 }
 
 
@@ -176,10 +154,10 @@ void transaction_parser::process_end()
   reachedEnd = true;
 }
 
-vector<warehouse>  transaction_parser::get_warehouses() {
+unordered_map<string, warehouse> & transaction_parser::get_warehouses() {
  return warehouses;
 }
 
-vector<food_item> transaction_parser::get_food_items() {
- return warehouses;
+unordered_map<string, food_item> & transaction_parser::get_food_items() {
+ return foodItems;
 }

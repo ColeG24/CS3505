@@ -46,10 +46,9 @@ class transaction_parser
   public:
     // Constructor
     transaction_parser(std::string filename);
-    std::vector<warehouse> & get_warehouses();
-    std::vector<food_item> & get_food_items();
-    transaction next_item(); 
-    file_data get_file_data() const;  
-};
+    std::unordered_map <std::string, warehouse> & get_warehouses();
+    std::unordered_map<std::string, food_item> & get_food_items();
+    transaction * next_item(); 
+   };
 
 #endif

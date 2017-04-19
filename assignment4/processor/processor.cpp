@@ -10,7 +10,6 @@
 #include <vector>
 #include "food_item.h"
 #include "../reader/transaction.h"
-#include "../reader/file_data.h"
 #include <iostream>
 
 using namespace std;
@@ -56,14 +55,14 @@ void processor::preprocess()
  */ 
 void processor::initialize()
 {
-  warehouseNames.reserve(data.warehouses.size());
-  for (auto kv : data.warehouses)
+  warehouseNames.reserve(parser.get_warehouses().size());
+  for (auto kv : parser.get_warehouses)
   {
     warehouseNames.push_back(kv.first);
   }
 
-  allFood.reserve(data.foodItems.size());
-  for (auto kv : data.foodItems)
+  allFood.reserve(parser.get_foodItems().size());
+  for (auto kv : parser.get_foodItems())
   {
     allFood.push_back(kv.second);
   }
@@ -76,7 +75,7 @@ void processor::removeExpiredFood(int day)
 {
   for (int i = 0; i < warehouseNames.size(); i++)
   {
-    data.warehouses[warehouseNames[i]].remove_at_expiration_date(day);
+    parser.get_warehouses()[warehouseNames[i]].remove_at_expiration_date(day);
   }
 }
 
@@ -98,7 +97,7 @@ void processor::compute_unstocked_and_wellstocked_products()
   for (int i = 0; i < warehouseNames.size(); i++)
   {
     unordered_set<string> warehouseUPCS;
-    vector<string>  warehouseFoods = data.warehouses[warehouseNames[i]].get_upc_codes();
+    vector<string>  warehouseFoods = parser.get_warehouses()[warehouseNames[i]].get_upc_codes();
     for (int j = 0; j < warehouseFoods.size(); j++)
     {
       string currupc = warehouseFoods[j];
@@ -117,14 +116,14 @@ void processor::compute_unstocked_and_wellstocked_products()
 	      upcToQuantity[currupc]++;
 	      if (upcToQuantity[currupc] == 2)
         {
-	        wellStockedFood.push_back(data.foodItems[currupc]);
+	        wellStockedFood.push_back(parser.get_food_items[currupc]);
         }
       }
     }
   }
   for (const auto& elem: allFoodNotSeen)
   {
-    unstockedFood.push_back(data.foodItems[elem]);
+    unstockedFood.push_back(parser.get_food_items()[elem]);
   }
 }
 
@@ -206,7 +205,7 @@ void processor::compute_top_3_products()
       }
     }
     requestToQuantityMap.erase(correspondingUPC[i]);
-    top3.push_back(data.foodItems[correspondingUPC[i]]);
+    top3.push_back(parser.get_food_items()[correspondingUPC[i]]);
   }
 }
 
