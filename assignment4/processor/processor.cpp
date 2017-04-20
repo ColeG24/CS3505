@@ -13,17 +13,19 @@
 #include "../reader/transaction.h"
 #include <iostream>
 #include <string>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
 
 /*
  * Creates a new processor, which processes the passed in file data
  */
 processor::processor(transaction_parser & parser):
-  parser(parser), requestToQuantityMap(*new unordered_map<string, int>())
+  parser(parser), requestToQuantityMap(*new unordered_map<string, int>()), day(0)
 {
   initialize();
-  preprocess(); // All timing issues
+  preprocess(); 
   compute_unstocked_and_wellstocked_products();
   compute_top_3_products();
 }
@@ -38,8 +40,8 @@ void processor::preprocess()
    {
      transPtr = parser.next_item();
      if (transPtr == NULL)
-       return;
-
+       break;
+      
      if (transPtr->get_type() == "request") // Process only requests
      {
       if (requestToQuantityMap.find(transPtr->get_upc()) != requestToQuantityMap.end())
@@ -51,15 +53,26 @@ void processor::preprocess()
         requestToQuantityMap.emplace(transPtr->get_upc(), transPtr->get_count());
       }
      }
-     // Maybe should only do this once per date
-     removeExpiredFood(transPtr->get_date());
-    
+
+     if (transPtr->get_date() != day)
+     {    
+       for (int i = day + 1; i <= transPtr->get_date(); i++)
+       {
+         removeExpiredFood(i);
+       }
+       day = transPtr->get_date();
+     }
+
      food_item & foodItem = parser.get_food_items()[transPtr->get_upc()];
 
      warehouse & currWarehouse = parser.get_warehouses()[transPtr->get_warehouse_name()]; 
+        
      currWarehouse.process_transaction(*transPtr, foodItem);
+
      delete transPtr;
     }
+
+   
 }
 
 /*

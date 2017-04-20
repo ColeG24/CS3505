@@ -11,6 +11,7 @@
 #include "processor/processor.h"
 #include <vector>
 #include <string>
+#include <algorithm>
 #include <unordered_map>
 #include <iostream>
 
@@ -33,8 +34,16 @@ int main(int argc, char* argv[])
   // Retrieve report data.
   
   vector<food_item> wellStockedFood = process.get_wellstocked_food(); 
+  sort( wellStockedFood.begin( ), wellStockedFood.end( ), [ ]( const food_item& lhs, const food_item& rhs )
+  {
+     return lhs.get_upc() < rhs.get_upc();
+   });
 
   vector<food_item> unstockedFood = process.get_unstocked_food();
+    sort( unstockedFood.begin( ), unstockedFood.end( ), [ ]( const food_item& lhs, const food_item& rhs )
+  {
+     return lhs.get_upc() < rhs.get_upc();
+   });
 
   vector <food_item> top3 = process.get_top3_products();
 
@@ -46,19 +55,19 @@ int main(int argc, char* argv[])
   cout << endl << "Unstocked Products: " << endl;
   for (int i = 0; i < unstockedFood.size(); i++)
   {
-    cout << unstockedFood[i].get_upc() << " " << unstockedFood[i].get_name() << endl;
+    cout << unstockedFood[i].get_upc() << " " << unstockedFood[i].get_name() << "\n";
   }
 
   cout << endl << "Well-Stocked Products: " << endl;
   for (int i = 0; i < wellStockedFood.size(); i++)
   {
-    cout << wellStockedFood[i].get_upc() << " " << wellStockedFood[i].get_name() << endl;
+    cout << wellStockedFood[i].get_upc() << " " << wellStockedFood[i].get_name() << "\n";
   }
 
   cout << endl << "Most Popular Products: " << endl;
   for (int i = 0; i < top3.size(); i++)
   {
-    cout << top3[i].get_upc() << " " << top3[i].get_name() << endl;
+    cout << top3[i].get_upc() << " " << top3[i].get_name() << "\n";
   }
 
   cout << endl;
